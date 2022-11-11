@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30524.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".msbuild", ".msbuild", "{BA3CF70D-79A2-4BD5-AE60-C4485E591D87}"
+ProjectSection(SolutionItems) = preProject
+	.msbuild\build.props = .msbuild\build.props
+	.msbuild\package.props = .msbuild\package.props
+	.msbuild\product.props = .msbuild\product.props
+	.msbuild\version.props = .msbuild\version.props
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".workflows", ".workflows", "{1EEB475D-C4E1-4DD8-BE10-44D2185F355B}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build_and_publish_nuget.yml = ..\.github\workflows\build_and_publish_nuget.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tests", ".tests", "{4D0A2092-01C6-4396-A117-31263DD64D57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stenn.Shared", "Stenn.Shared\Stenn.Shared.csproj", "{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90A61DCC-4469-4042-B534-C37020F4A7EF}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal

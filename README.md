@@ -1,2 +1,1 @@
-# stenn-shared
-Shared components
+# Stenn shared nuget packages

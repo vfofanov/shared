@@ -1,7 +1,7 @@
 using System.Linq;
-using Stenn.Shared.Tables;
+using Stenn.Shared.Csv;
 
-namespace Stenn.Csv
+namespace Stenn.Shared.Tables
 {
     public sealed class CsvTableWriter : ITableWriter<string?>
     {

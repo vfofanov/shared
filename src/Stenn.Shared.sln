@@ -9,6 +9,7 @@ ProjectSection(SolutionItems) = preProject
 	.msbuild\package.props = .msbuild\package.props
 	.msbuild\product.props = .msbuild\product.props
 	.msbuild\version.props = .msbuild\version.props
+	.msbuild\nuget.packages.versions.targets = .msbuild\nuget.packages.versions.targets
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".workflows", ".workflows", "{1EEB475D-C4E1-4DD8-BE10-44D2185F355B}"
@@ -20,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tests", ".tests", "{4D0A20
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stenn.Shared", "Stenn.Shared\Stenn.Shared.csproj", "{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stenn.Shared.Csv", "Stenn.Shared.Csv\Stenn.Shared.Csv.csproj", "{C85E7AA6-E137-4F07-94E9-90C526CCC301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stenn.Shared.AspNetCore", "Stenn.Shared.AspNetCore\Stenn.Shared.AspNetCore.csproj", "{0EE6736E-332D-431C-99DE-3442E32397D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +35,14 @@ Global
 		{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA80A9B9-C7E3-47D4-BC37-1254B3054D9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C85E7AA6-E137-4F07-94E9-90C526CCC301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85E7AA6-E137-4F07-94E9-90C526CCC301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85E7AA6-E137-4F07-94E9-90C526CCC301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85E7AA6-E137-4F07-94E9-90C526CCC301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE6736E-332D-431C-99DE-3442E32397D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE6736E-332D-431C-99DE-3442E32397D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE6736E-332D-431C-99DE-3442E32397D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE6736E-332D-431C-99DE-3442E32397D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

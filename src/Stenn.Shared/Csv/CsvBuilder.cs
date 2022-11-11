@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 
-namespace Stenn.Csv
+namespace Stenn.Shared.Csv
 {
     public sealed class CsvBuilder
     {

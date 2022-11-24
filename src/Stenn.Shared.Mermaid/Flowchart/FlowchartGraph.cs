@@ -7,13 +7,15 @@ namespace Stenn.Shared.Mermaid.Flowchart
 {
     public sealed class FlowchartGraph: ElementBase
     {
+        private static string RootItemName = "###root###";
+        
         private readonly Dictionary<string, FlowchartGraphItem> _items;
         private readonly List<FlowchartRelation> _relations;
 
         public FlowchartGraph()
         {
-            Root = new FlowchartGraphItem("###flowchart###", this, null);
-            _items = new Dictionary<string, FlowchartGraphItem>();
+            Root = new FlowchartGraphItem(RootItemName, this, null);
+            _items = new Dictionary<string, FlowchartGraphItem> { { Root.Id, Root } };
             _relations = new List<FlowchartRelation>();
         }
 
@@ -74,11 +76,16 @@ namespace Stenn.Shared.Mermaid.Flowchart
 
         public bool RemoveItem(string id)
         {
+            if (id == RootItemName)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id), "Can't remove root item");
+            }
+
             if (!_items.TryGetValue(id, out var item))
             {
                 return false;
             }
-
+            
             SetStyleClassToItem(null, item);
             item.Parent!._children.Remove(item);
             return _items.Remove(id);

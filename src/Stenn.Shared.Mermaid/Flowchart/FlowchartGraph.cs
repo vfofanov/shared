@@ -5,10 +5,10 @@ using Stenn.Shared.Text;
 
 namespace Stenn.Shared.Mermaid.Flowchart
 {
-    public sealed class FlowchartGraph: ElementBase
+    public sealed class FlowchartGraph : ElementBase
     {
         private static string RootItemName = "###root###";
-        
+
         private readonly Dictionary<string, FlowchartGraphItem> _items;
         private readonly List<FlowchartRelation> _relations;
 
@@ -54,7 +54,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
                 }
                 item = parent.Add(id, name, countChildren);
             }
-            
+
             if (name is { })
             {
                 item.Caption = name;
@@ -85,7 +85,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
             {
                 return false;
             }
-            
+
             SetStyleClassToItem(null, item);
             item.Parent!._children.Remove(item);
             return _items.Remove(id);
@@ -187,32 +187,32 @@ namespace Stenn.Shared.Mermaid.Flowchart
         }
 
         /// <inheritdoc />
-        protected internal override bool Print(AdvStringBuilder builder)
+        protected internal override bool Print(AdvStringBuilder builder, MermaidPrintConfig config)
         {
-            Root.Print(builder);
+            Root.Print(builder, config);
             builder.AppendLine();
             builder.AppendLine();
 
             builder.AppendLine("%%% Relations");
-            
+
             foreach (var relation in _relations)
             {
-                if(relation.Print(builder))
+                if (relation.Print(builder, config))
                 {
                     builder.AppendLine();
                 }
             }
-            
+
             builder.AppendLine();
 
             builder.AppendLine("%%% Style classes");
 
             foreach (var styleClass in StyleClasses.Values.Where(s => s.Items.Count > 0 && s.Modifiers.Count > 0))
             {
-                if (styleClass.Print(builder))
+                if (styleClass.Print(builder, config))
                 {
                     builder.AppendLine();
-                    builder.AppendLine();    
+                    builder.AppendLine();
                 }
             }
 

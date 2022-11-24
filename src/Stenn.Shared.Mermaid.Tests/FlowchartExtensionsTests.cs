@@ -21,7 +21,7 @@ namespace Stenn.Shared.Mermaid.Tests
             graph.GetOrAdd("Domain_Counterparties", "Counterparties", 2, styleClassId: counterpartiesClass);
             
             graph.GetOrAdd("Country", parentItemId: "Domain_Counterparties", direction: FlowchartGraphDirection.LR);
-            graph.GetOrAdd("Country_States","States\"{}()[]-<>%", parentItemId: "Country", shape: FlowchartShape.Hexagon);
+            graph.GetOrAdd("Country_States","States#\"{}()[]<>%~='", parentItemId: "Country", shape: FlowchartShape.Hexagon);
             
             graph.GetOrAdd("CountryState", parentItemId: "Domain_Counterparties", direction: FlowchartGraphDirection.LR);
             graph.GetOrAdd("CountryState_Country","Country", parentItemId: "CountryState", shape: FlowchartShape.BoxRoundEdges);
@@ -40,9 +40,9 @@ namespace Stenn.Shared.Mermaid.Tests
                 FlowchartRelationLineStyle.BoldLine,
                 0, FlowchartRelationLineEnding.None);
             graph.AddRelation("Country", "Person_Country", "fa:fa-1 CountryId fa:fa-N", FlowchartRelationLineEnding.None, FlowchartRelationLineStyle.BoldLine, 3);
-            graph.AddRelation("Country_States", "CountryState_Country", "fa:fa-1 CountryId \"{}()[]-<>% fa:fa-N", FlowchartRelationLineEnding.Arrow, FlowchartRelationLineStyle.Dots);
+            graph.AddRelation("Country_States", "CountryState_Country", "fa:fa-1 CountryId #\"{}()[]<>%~=' fa:fa-N", FlowchartRelationLineEnding.Arrow, FlowchartRelationLineStyle.Dots);
             
-            var output = graph.ToString();
+            var output = graph.ToString(MermaidPrintConfig.ForHtml);
         }
     }
 }

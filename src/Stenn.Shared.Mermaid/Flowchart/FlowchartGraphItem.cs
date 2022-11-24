@@ -55,16 +55,16 @@ namespace Stenn.Shared.Mermaid.Flowchart
 
 
         /// <inheritdoc />
-        protected internal override bool Print(AdvStringBuilder builder)
+        protected internal override bool Print(AdvStringBuilder builder, MermaidPrintConfig config)
         {
             void PrintNode(FlowchartShape shape)
             {
-                builder.Append(MermaidHelper.EscapeString(Id));
+                builder.Append(MermaidHelper.EscapeString(Id, config));
                 if (string.IsNullOrWhiteSpace(Caption) && shape == FlowchartShape.Box)
                 {
                     return;
                 }
-                var caption = MermaidHelper.EscapeString(Caption ?? Id);
+                var caption = MermaidHelper.EscapeString(Caption ?? Id, config);
                 PrintCaption(builder, caption, shape);
             }
 
@@ -91,7 +91,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
                 builder.AppendLine();
                 builder.AddIdent();
 
-                AppendChildren(builder);
+                AppendChildren(builder, config);
             }
             else
             {
@@ -111,7 +111,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
                         builder.AppendLine();
                     }
 
-                    AppendChildren(builder);
+                    AppendChildren(builder,config);
 
                     builder.RemoveIdent();
                     builder.Append("end");
@@ -178,11 +178,11 @@ namespace Stenn.Shared.Mermaid.Flowchart
             }
         }
 
-        private void AppendChildren(AdvStringBuilder builder)
+        private void AppendChildren(AdvStringBuilder builder, MermaidPrintConfig config)
         {
             foreach (var child in _children.OrderBy(c => c.Id))
             {
-                if(child.Print(builder))
+                if (child.Print(builder, config))
                 {
                     builder.AppendLine();
                 }

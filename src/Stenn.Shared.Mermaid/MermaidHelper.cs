@@ -1,20 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Stenn.Shared.Mermaid
 {
     public static class MermaidHelper
     {
-        public static string EscapeString(string value)
+        public static string EscapeString(string value, MermaidPrintConfig config)
         {
-            return new string(EscapeStringInternal(value).ToArray());
+            Func<char, string?> escape = config switch
+            {
+                MermaidPrintConfig.Normal => EscapeNormal,
+                MermaidPrintConfig.ForHtml => EscapeToHtml,
+                _ => throw new ArgumentOutOfRangeException(nameof(config))
+            };
+            return new string(EscapeStringInternal(value, escape).ToArray());
         }
 
-        private static IEnumerable<char> EscapeStringInternal(string value)
+        private static IEnumerable<char> EscapeStringInternal(string value, Func<char, string?> escape)
         {
             foreach (var symbol in value)
             {
-                var escaped = Escape(symbol);
+                var escaped = escape(symbol);
                 if (escaped is null)
                 {
                     yield return symbol;
@@ -29,49 +36,45 @@ namespace Stenn.Shared.Mermaid
             }
         }
 
-        private static string? Escape(char symbol)
+        private static string? EscapeNormal(char symbol)
         {
-            switch (symbol)
+            return symbol switch
             {
-                case '"':
-                    return "&quot";
-                case '&':
-                    return "&amp";
-                case '%':
-                    return "&#37";
-                case '\'':
-                    return "&#39";
-                case '(':
-                    return "&#40";
-                case ')':
-                    return "&#41";
-                case ';':
-                    return "&#59";
-                case '<':
-                    return "&lt";
-                case '=':
-                    return "&#61";
-                case '>':
-                    return "&gt";
-                case '[':
-                    return "&#91";
-                case ']':
-                    return "&#93";
-                case '{':
-                    return "&#123";
-                case '|':
-                    return "&#124";
-                case '}':
-                    return "&#125";
-                case '~':
-                    return "&#126";
-                // case '-':
-                //     return "&#45";
-                // case ':':
-                //     return "&#58";
-                default:
-                    return null;
-            }
+                '"' => "&quot",
+                '&' => "&amp",
+                '%' => "&#37",
+                '\'' => "&#39",
+                '(' => "&#40",
+                ')' => "&#41",
+                ';' => "&#59",
+                '<' => "&lt",
+                '=' => "&#61",
+                '>' => "&gt",
+                '[' => "&#91",
+                ']' => "&#93",
+                '{' => "&#123",
+                '|' => "&#124",
+                '}' => "&#125",
+                '~' => "&#126",
+                _ => null
+            };
+        }
+
+        private static string? EscapeToHtml(char symbol)
+        {
+            return symbol switch
+            {
+                '"' => "&ampquot",
+                '%' => "&amp#37",
+                '(' => "&amp#40",
+                ')' => "&amp#41",
+                '{' => "&amp#123",
+                '}' => "&amp#125",
+                '[' => "&amp#91",
+                ']' => "&amp#93",
+                '~' => "&amp#126",
+                _ => EscapeNormal(symbol)
+            };
         }
     }
 }

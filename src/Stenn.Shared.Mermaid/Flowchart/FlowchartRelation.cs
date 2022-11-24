@@ -49,7 +49,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
         public FlowchartRelationLineEnding RightItemEnding { get; set; }
 
         /// <inheritdoc />
-        protected internal override bool Print(AdvStringBuilder builder)
+        protected internal override bool Print(AdvStringBuilder builder, MermaidPrintConfig config)
         {
             var lineLength = _lineLength;
             if ((LeftItemEnding == None && RightItemEnding == None) || LineStyle == Dots)
@@ -72,7 +72,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
                 }
             }
 
-            builder.Append(MermaidHelper.EscapeString(LeftItem.Id));
+            builder.Append(MermaidHelper.EscapeString(LeftItem.Id, config));
             switch(LeftItemEnding)
             {
                 case None:
@@ -118,10 +118,10 @@ namespace Stenn.Shared.Mermaid.Flowchart
             if (!string.IsNullOrWhiteSpace(Caption))
             {
                 builder.Append('|');
-                builder.Append(MermaidHelper.EscapeString(Caption));
+                builder.Append(MermaidHelper.EscapeString(Caption, config));
                 builder.Append('|');
             }
-            builder.Append(MermaidHelper.EscapeString(RightItem.Id));
+            builder.Append(MermaidHelper.EscapeString(RightItem.Id, config));
 
             return true;
         }

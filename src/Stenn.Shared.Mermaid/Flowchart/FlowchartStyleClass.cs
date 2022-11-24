@@ -51,7 +51,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
             return this;
         }
 
-        protected internal override bool Print(AdvStringBuilder builder)
+        protected internal override bool Print(AdvStringBuilder builder, MermaidPrintConfig config)
         {
             if (Items.Count == 0 || Modifiers.Count == 0)
             {

@@ -41,6 +41,13 @@ namespace Stenn.Shared.Mermaid.Tests
                 0, FlowchartRelationLineEnding.None);
             graph.AddRelation("Country", "Person_Country", "fa:fa-1 CountryId fa:fa-N", FlowchartRelationLineEnding.None, FlowchartRelationLineStyle.BoldLine, 3);
             graph.AddRelation("Country_States", "CountryState_Country", "fa:fa-1 CountryId #\"{}()[]<>%~=' fa:fa-N", FlowchartRelationLineEnding.Arrow, FlowchartRelationLineStyle.Dots);
+
+            graph.AddItemInteractionCallback("CountryState_Country", $"call exampleCallback(Stenn.Domain.CountryState.Country)",
+                "Click for copy R# search string");
+            
+            graph.AddItemInteractionLink("Person_Country", "https://google.com", "Test link to https://google.com");
+            
+            graph.AddItemInteractionTooltip("Country_States", "Test tooltip");
             
             var output = graph.ToString(MermaidPrintConfig.ForHtml);
         }

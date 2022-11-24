@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Stenn.Shared.Mermaid.Flowchart.Interaction;
 using Stenn.Shared.Text;
 
 namespace Stenn.Shared.Mermaid.Flowchart
@@ -48,11 +49,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
             return item;
         }
 
-        public bool Remove(string id)
-        {
-            return Graph.RemoveItem(id);
-        }
-
+        public FlowchartInteraction? Interaction { get; internal set; }
 
         /// <inheritdoc />
         protected internal override bool Print(AdvStringBuilder builder, MermaidPrintConfig config)

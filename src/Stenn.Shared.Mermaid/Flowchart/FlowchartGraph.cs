@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Stenn.Shared.Mermaid.Flowchart.Interaction;
 using Stenn.Shared.Text;
 
 namespace Stenn.Shared.Mermaid.Flowchart
@@ -133,6 +134,38 @@ namespace Stenn.Shared.Mermaid.Flowchart
             return styleClass;
         }
 
+        public void AddItemInteractionCallback(string itemId, string reference, string? toolTip = null)
+        {
+            AddItemInteractionCallback(itemId, config => reference, toolTip);
+        }
+
+        public void AddItemInteractionCallback(string itemId, Func<MermaidPrintConfig, string> reference, string? toolTip = null)
+        {
+            AddInteraction(itemId, new FlowchartInteractionCallback(reference, toolTip));
+        }
+
+        public void AddItemInteractionLink(string itemId, string link, string? toolTip = null,
+            FlowchartInteractionLinkOpenType openType = FlowchartInteractionLinkOpenType.Blank)
+        {
+            AddInteraction(itemId, new FlowchartInteractionLink(link, toolTip, openType));
+        }
+
+        public void AddItemInteractionTooltip(string itemId, string toolTip)
+        {
+            AddInteraction(itemId, new FlowchartInteractionTooltip(toolTip));
+        }
+
+        private void AddInteraction(string itemId, FlowchartInteraction intercation)
+        {
+            var item = FindItem(itemId);
+            if (item == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(itemId), $"Can;t find graph item '{itemId}'");
+            }
+            intercation.Item = item;
+            item.Interaction = intercation;
+        }
+
         public bool RemoveStyleClass(string id)
         {
             if (!StyleClasses.TryGetValue(id, out var styleClass))
@@ -170,6 +203,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
             }
             item._styleClassId = id;
         }
+
 
         public FlowchartRelation AddRelation(string leftItemId, string rightItemId, string? caption = null,
             FlowchartRelationLineEnding leftItemEnding = FlowchartRelationLineEnding.None,
@@ -216,6 +250,15 @@ namespace Stenn.Shared.Mermaid.Flowchart
                 }
             }
 
+            foreach (var item in _items.Values.OrderBy(i=>i.Id))
+            {
+                if (item.Interaction is {} interaction)
+                {
+                    interaction.Print(builder, config);
+                    builder.AppendLine();
+                }
+            }
+            
             return true;
         }
     }

@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using FluentAssertions;
 using NUnit.Framework;
 using Stenn.Shared.Mermaid.Flowchart;
 
@@ -50,6 +51,12 @@ namespace Stenn.Shared.Mermaid.Tests
             graph.AddItemInteractionTooltip("Country_States", "Test tooltip");
             
             var output = graph.ToString(MermaidPrintConfig.ForHtml);
+        }
+
+        [TestCase("Country#\"{}()[]<>%~='","Country#_____________")]
+        public void TestRestrictedSymbols(string value, string expected)
+        {
+            MermaidHelper.ReplaceRestrictedSymbols(value).Should().Be(expected);
         }
     }
 }

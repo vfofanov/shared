@@ -6,18 +6,28 @@ namespace Stenn.Shared.Mermaid
 {
     public static class MermaidHelper
     {
+        public static string ReplaceRestrictedSymbols(string value, char replace = '_')
+        {
+            return TransformString(value, c => ReplaceRestrictedSymbols(c, replace));
+        }
+
         public static string EscapeString(string value, MermaidPrintConfig config)
         {
             Func<char, string?> escape = config switch
             {
                 MermaidPrintConfig.Normal => EscapeNormal,
-                MermaidPrintConfig.ForHtml => EscapeToHtml,
+                MermaidPrintConfig.ForHtml => EscapeForHtml,
                 _ => throw new ArgumentOutOfRangeException(nameof(config))
             };
-            return new string(EscapeStringInternal(value, escape).ToArray());
+            return new string(TransformString(value, escape).ToArray());
         }
 
-        private static IEnumerable<char> EscapeStringInternal(string value, Func<char, string?> escape)
+        private static string TransformString(string value, Func<char, char> transform)
+        {
+            return new string(value.Select(transform).ToArray());
+        }
+
+        private static IEnumerable<char> TransformString(string value, Func<char, string?> escape)
         {
             foreach (var symbol in value)
             {
@@ -33,6 +43,32 @@ namespace Stenn.Shared.Mermaid
                         yield return s;
                     }
                 }
+            }
+        }
+
+        private static char ReplaceRestrictedSymbols(char symbol, char replace)
+        {
+            switch (symbol)
+            {
+                case '"':
+                case '&':
+                case '%':
+                case '\'':
+                case '(':
+                case ')':
+                case ';':
+                case '<':
+                case '=':
+                case '>':
+                case '[':
+                case ']':
+                case '{':
+                case '|':
+                case '}':
+                case '~':
+                    return replace;
+                default:
+                    return symbol;
             }
         }
 
@@ -60,10 +96,12 @@ namespace Stenn.Shared.Mermaid
             };
         }
 
-        private static string? EscapeToHtml(char symbol)
+        private static string? EscapeForHtml(char symbol)
         {
             return symbol switch
             {
+                '<' => "&amplt",
+                '>' => "&ampgt",
                 '"' => "&ampquot",
                 '%' => "&amp#37",
                 '(' => "&amp#40",

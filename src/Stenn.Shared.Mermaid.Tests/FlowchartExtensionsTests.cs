@@ -48,7 +48,7 @@ namespace Stenn.Shared.Mermaid.Tests
             
             graph.AddItemInteractionLink("Person_Country", "https://google.com", "Test link to https://google.com");
             
-            graph.AddItemInteractionTooltip("Country_States", "Test tooltip");
+            graph.AddItemInteractionTooltip("Country_States", "Test tooltip #{}()[]%~='");
             
             var output = graph.ToString(MermaidPrintConfig.ForHtml);
         }

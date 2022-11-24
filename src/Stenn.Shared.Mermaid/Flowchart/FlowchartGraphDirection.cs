@@ -43,6 +43,8 @@ namespace Stenn.Shared.Mermaid.Flowchart
     public enum FlowchartRelationLineEnding
     {
         None = 0,
-        Arrow = 1
+        Arrow = 1,
+        Cross = 2,
+        Circle = 3
     }
 }

@@ -52,7 +52,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
         protected internal override bool Print(AdvStringBuilder builder, MermaidPrintConfig config)
         {
             var lineLength = _lineLength;
-            if ((LeftItemEnding == None && RightItemEnding == None) || LineStyle == Dots)
+            if (RightItemEnding == None || LineStyle == Dots)
             {
                 lineLength += 1;
             }
@@ -73,12 +73,19 @@ namespace Stenn.Shared.Mermaid.Flowchart
             }
 
             builder.Append(MermaidHelper.EscapeString(LeftItem.Id, config));
+            builder.Append(' ');
             switch(LeftItemEnding)
             {
                 case None:
                     break;
                 case Arrow:
                     builder.Append('<');
+                    break;
+                case Cross:
+                    builder.Append('x');
+                    break;
+                case Circle:
+                    builder.Append('o');
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -112,9 +119,18 @@ namespace Stenn.Shared.Mermaid.Flowchart
                 case Arrow:
                     builder.Append('>');
                     break;
+                case Cross:
+                    builder.Append('x');
+                    break;
+                case Circle:
+                    builder.Append('o');
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
+            builder.Append(' ');
+            
             if (!string.IsNullOrWhiteSpace(Caption))
             {
                 builder.Append('|');

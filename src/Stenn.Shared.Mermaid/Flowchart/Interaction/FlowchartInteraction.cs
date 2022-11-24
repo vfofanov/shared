@@ -32,7 +32,7 @@ namespace Stenn.Shared.Mermaid.Flowchart.Interaction
             {
                 builder.Append(' ');
                 builder.Append('"');
-                builder.Append(MermaidHelper.EscapeString(ToolTip, config));
+                builder.Append(ToolTip);
                 builder.Append('"');
             }
             return true;

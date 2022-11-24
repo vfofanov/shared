@@ -1,5 +1,7 @@
 using System;
 using Stenn.Shared.Text;
+using static Stenn.Shared.Mermaid.Flowchart.FlowchartRelationLineEnding;
+using static Stenn.Shared.Mermaid.Flowchart.FlowchartRelationLineStyle;
 
 namespace Stenn.Shared.Mermaid.Flowchart
 {
@@ -11,10 +13,10 @@ namespace Stenn.Shared.Mermaid.Flowchart
             FlowchartGraphItem leftItem,
             FlowchartGraphItem rightItem,
             string? caption = null,
-            FlowchartRelationLineEnding leftItemEnding = FlowchartRelationLineEnding.None,
-            FlowchartRelationLineStyle lineStyle = FlowchartRelationLineStyle.Line,
+            FlowchartRelationLineEnding leftItemEnding = None,
+            FlowchartRelationLineStyle lineStyle = Line,
             int lineLength = 0,
-            FlowchartRelationLineEnding rightItemEnding = FlowchartRelationLineEnding.Arrow)
+            FlowchartRelationLineEnding rightItemEnding = Arrow)
         {
             LeftItem = leftItem;
             RightItem = rightItem;
@@ -49,9 +51,14 @@ namespace Stenn.Shared.Mermaid.Flowchart
         /// <inheritdoc />
         protected internal override bool Print(AdvStringBuilder builder)
         {
-            void AddLineLength(char lineChar, int modifier = 0)
+            var lineLength = _lineLength;
+            if ((LeftItemEnding == None && RightItemEnding == None) || LineStyle == Dots)
             {
-                var lineLength = _lineLength + modifier;
+                lineLength += 1;
+            }
+
+            void AddLineLength(char lineChar)
+            {
                 switch (lineLength)
                 {
                     case 0:
@@ -68,9 +75,9 @@ namespace Stenn.Shared.Mermaid.Flowchart
             builder.Append(MermaidHelper.EscapeString(LeftItem.Id));
             switch(LeftItemEnding)
             {
-                case FlowchartRelationLineEnding.None:
+                case None:
                     break;
-                case FlowchartRelationLineEnding.Arrow:
+                case Arrow:
                     builder.Append('<');
                     break;
                 default:
@@ -79,19 +86,19 @@ namespace Stenn.Shared.Mermaid.Flowchart
 
             switch (LineStyle)
             {
-                case FlowchartRelationLineStyle.Line:
+                case Line:
                     builder.Append('-');
                     AddLineLength('-');
                     builder.Append('-');
                     break;
-                case FlowchartRelationLineStyle.BoldLine:
+                case BoldLine:
                     builder.Append('=');
                     AddLineLength('=');
                     builder.Append('=');
                     break;
-                case FlowchartRelationLineStyle.Dots:
+                case Dots:
                     builder.Append('-');
-                    AddLineLength('.', 1);
+                    AddLineLength('.');
                     builder.Append('-');
                     break;
                 default:
@@ -100,9 +107,9 @@ namespace Stenn.Shared.Mermaid.Flowchart
             
             switch(RightItemEnding)
             {
-                case FlowchartRelationLineEnding.None:
+                case None:
                     break;
-                case FlowchartRelationLineEnding.Arrow:
+                case Arrow:
                     builder.Append('>');
                     break;
                 default:

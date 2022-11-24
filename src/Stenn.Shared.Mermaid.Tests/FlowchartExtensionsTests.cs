@@ -35,6 +35,10 @@ namespace Stenn.Shared.Mermaid.Tests
             graph.GetOrAdd("Person", parentItemId: "Domain_Client", direction: FlowchartGraphDirection.LR);
             graph.GetOrAdd("Person_Country", "Country", parentItemId: "Person", shape: FlowchartShape.BoxRoundEdges);
 
+            graph.AddRelation("Country", "Person_Country", "fa:fa-1 CountryId fa:fa-N", 
+                FlowchartRelationLineEnding.None, 
+                FlowchartRelationLineStyle.BoldLine,
+                0, FlowchartRelationLineEnding.None);
             graph.AddRelation("Country", "Person_Country", "fa:fa-1 CountryId fa:fa-N", FlowchartRelationLineEnding.None, FlowchartRelationLineStyle.BoldLine, 3);
             graph.AddRelation("Country_States", "CountryState_Country", "fa:fa-1 CountryId \"{}()[]-<>% fa:fa-N", FlowchartRelationLineEnding.Arrow, FlowchartRelationLineStyle.Dots);
             

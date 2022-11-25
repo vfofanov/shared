@@ -8,16 +8,14 @@ using Stenn.Shared.Text;
 namespace Stenn.Shared.Mermaid.Flowchart
 {
     [DebuggerDisplay("{Id}, Direction:{Direction}, Shape: {Shape}, Children:{Children.Count}")]
-    public sealed class FlowchartGraphItem : ElementBase
+    public sealed class FlowchartGraphItem : ElementIdBase
     {
-        public static implicit operator string(FlowchartGraphItem v) => v.Id;
-
         internal readonly List<FlowchartGraphItem> _children;
         internal string? _styleClassId;
 
         internal FlowchartGraphItem(string id, FlowchartGraph graph, FlowchartGraphItem? parent, string? caption = null, int countChildren = 0)
+        :base(id)
         {
-            Id = id;
             Graph = graph;
             Parent = parent;
             Parent = parent;
@@ -25,15 +23,12 @@ namespace Stenn.Shared.Mermaid.Flowchart
             _children = new List<FlowchartGraphItem>(countChildren);
         }
 
-        public string Id { get; }
         public string? Caption { get; set; }
         public FlowchartGraph Graph { get; }
         public FlowchartGraphItem? Parent { get; }
-
         public IReadOnlyCollection<FlowchartGraphItem> Children => _children;
 
         public FlowchartGraphDirection Direction { get; set; } = FlowchartGraphDirection.None;
-
         public FlowchartShape Shape { get; set; } = FlowchartShape.Box;
 
         public string? StyleClassId

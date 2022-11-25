@@ -15,9 +15,9 @@ namespace Stenn.Shared.Mermaid.Tests
 
             //--Counterparties
             var counterpartiesClass = graph.GetOrAddStyleClass("counterpartiesClass")
-                .SetModifier("fill", "#ccffcc")
-                .SetModifier("stroke-width", "2px")
-                .SetModifier("stroke-dasharray", "2 2");
+                .SetFill("#ccffcc")
+                .SetStrokeWidth("2px")
+                .SetStrokeDashArray("2 2");
 
             graph.GetOrAdd("Domain_Counterparties", "Counterparties", 2, styleClassId: counterpartiesClass);
             
@@ -29,7 +29,7 @@ namespace Stenn.Shared.Mermaid.Tests
 
             //--Client
             var clientClass = graph.AddStyleClass(counterpartiesClass.Copy("clientClass")
-                .SetModifier("fill", "#bbf"));
+                .SetFill("#bbf"));
 
             graph.GetOrAdd("Domain_Client", "Client", 1, styleClassId: clientClass);
             

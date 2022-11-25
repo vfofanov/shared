@@ -92,6 +92,25 @@ namespace Stenn.Shared.Mermaid.Flowchart
             return _items.Remove(id);
         }
 
+        public bool ChangeItemId(string id, string newId)
+        {
+            var item = FindItem(id);
+            if (item is null)
+            {
+                throw new ArgumentException("Can't find item", nameof(id));
+            }
+            var existedItem = FindItem(newId);
+            if (existedItem is not null)
+            {
+                return false;
+            }
+            item.ChangeId(newId);
+            _items.Remove(id);
+            _items.Add(item.Id, item);
+            
+            return true;
+        }
+
         internal void AddItem(FlowchartGraphItem item)
         {
             _items.Add(item.Id, item);
@@ -175,7 +194,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
 
             foreach (var item in styleClass.Items)
             {
-                item.Value._styleClassId = null;
+                item._styleClassId = null;
             }
             return StyleClasses.Remove(id);
         }
@@ -190,7 +209,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
             if (item._styleClassId is { } prevClassId)
             {
                 var styleClass = FindStyleClass(prevClassId);
-                styleClass?.Items.Remove(item.Id);
+                styleClass?.Items.RemoveAll(i =>i.Id== item.Id);
             }
             if (id is { } classId)
             {
@@ -199,11 +218,10 @@ namespace Stenn.Shared.Mermaid.Flowchart
                 {
                     throw new ArgumentException($"Can't find style class '{id}'", nameof(id));
                 }
-                styleClass.Items.Add(item.Id, item);
+                styleClass.Items.Add(item);
             }
             item._styleClassId = id;
         }
-
 
         public FlowchartRelation AddRelation(string leftItemId, string rightItemId, string? caption = null,
             FlowchartRelationLineEnding leftItemEnding = FlowchartRelationLineEnding.None,

@@ -7,22 +7,19 @@ using Stenn.Shared.Text;
 namespace Stenn.Shared.Mermaid.Flowchart
 {
     [DebuggerDisplay("{Id}")]
-    public sealed class FlowchartStyleClass: ElementBase
+    public sealed class FlowchartStyleClass : ElementIdBase
     {
-        public static implicit operator string(FlowchartStyleClass v) => v.Id;
-        
         internal FlowchartStyleClass(string id, FlowchartGraph graph)
+            : base(id)
         {
-            Id = id;
             Graph = graph;
         }
 
-        public string Id { get; }
         internal FlowchartGraph Graph { get; }
-        
+
         internal Dictionary<string, string> Modifiers { get; init; } = new();
-        
-        internal Dictionary<string, FlowchartGraphItem> Items { get; init; } = new();
+
+        internal List<FlowchartGraphItem> Items { get; } = new();
 
         public FlowchartStyleClass Copy(string id)
         {
@@ -34,7 +31,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
             return new FlowchartStyleClass(id, graph) { Modifiers = Modifiers.ToDictionary(pair => pair.Key, pair => pair.Value) };
         }
 
-        public FlowchartStyleClass SetModifier(string name, string value)
+        public FlowchartStyleClass SetModifier(string name, string? value)
         {
             if (name == null)
             {
@@ -63,9 +60,9 @@ namespace Stenn.Shared.Mermaid.Flowchart
             builder.Append(' ');
             builder.AppendJoin(',', Modifiers.Select(m => $"{m.Key}:{m.Value}"));
             builder.AppendLine();
-            
+
             builder.Append("class ");
-            builder.AppendJoin(',', Items.Keys);
+            builder.AppendJoin(',', Items.Select(i => i.Id));
             builder.Append(' ');
             builder.Append(Id);
 

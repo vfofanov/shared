@@ -36,6 +36,10 @@ namespace Stenn.Shared.Mermaid.Tests
             graph.GetOrAdd("Person", parentItemId: "Domain_Client", direction: FlowchartGraphDirection.LR);
             graph.GetOrAdd("Person_Country", "Country", parentItemId: "Person", shape: FlowchartShape.BoxRoundEdges);
 
+            
+            graph.GetOrAdd("Domain_Standalone", "Standalone", 1);
+            graph.GetOrAdd("EntityStandalone", "EntityStandalone", parentItemId: "Domain_Standalone");
+            
             graph.AddRelation("Country", "Person_Country", "fa:fa-1 CountryId fa:fa-N", 
                 FlowchartRelationLineEnding.None, 
                 FlowchartRelationLineStyle.BoldLine,
@@ -50,7 +54,10 @@ namespace Stenn.Shared.Mermaid.Tests
             
             graph.AddItemInteractionTooltip("Country_States", "Test tooltip #{}()[]%~='");
             
-            var output = graph.ToString(MermaidPrintConfig.ForHtml);
+            //graph.CleanNodesWithoutRelations();
+            
+            var outputEditor = graph.ToString(MermaidPrintConfig.Normal);
+            var outputHtml = graph.ToString(MermaidPrintConfig.ForHtml);
         }
 
         [TestCase("Country#\"{}()[]<>%~='","Country#_____________")]

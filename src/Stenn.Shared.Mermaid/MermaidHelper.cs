@@ -19,7 +19,12 @@ namespace Stenn.Shared.Mermaid
                 MermaidPrintConfig.ForHtml => EscapeForHtml,
                 _ => throw new ArgumentOutOfRangeException(nameof(config))
             };
-            return new string(TransformString(value, escape).ToArray());
+            value = SaveMarkers(value);
+
+            var ret = new string(TransformString(value, escape).ToArray());
+
+            ret = RestoreMarkers(ret);
+            return ret;
         }
 
         private static string TransformString(string value, Func<char, char> transform)
@@ -44,6 +49,41 @@ namespace Stenn.Shared.Mermaid
                     }
                 }
             }
+        }
+
+        private static string SaveMarkers(string value)
+        {
+            value = MarkerReplace(value, MarkerStartB, ReplacementMarkerStartB);
+            value = MarkerReplace(value, MarkerEndB, ReplacementMarkerEndB);
+
+            value = MarkerReplace(value, MarkerStartI, ReplacementMarkerStartI);
+            value = MarkerReplace(value, MarkerEndI, ReplacementMarkerEndI);
+            return value;
+        }
+
+        private static string RestoreMarkers(string value)
+        {
+            value = MarkerReplace(value, ReplacementMarkerStartB, MarkerStartB);
+            value = MarkerReplace(value, ReplacementMarkerEndB, MarkerEndB);
+
+            value = MarkerReplace(value, ReplacementMarkerStartI, MarkerStartI);
+            value = MarkerReplace(value, ReplacementMarkerEndI, MarkerEndI);
+            return value;
+        }
+
+        private const string MarkerStartB = "<b>";
+        private const string ReplacementMarkerStartB = "####start_b####";
+        private const string MarkerEndB = "</b>";
+        private const string ReplacementMarkerEndB = "####end_b####";
+
+        private const string MarkerStartI = "<i>";
+        private const string ReplacementMarkerStartI = "####start_i####";
+        private const string MarkerEndI = "</i>";
+        private const string ReplacementMarkerEndI = "####end_i####";
+
+        private static string MarkerReplace(string value, string marker, string replacement)
+        {
+            return value.Replace(marker, replacement, StringComparison.CurrentCultureIgnoreCase);
         }
 
         private static char ReplaceRestrictedSymbols(char symbol, char replace)

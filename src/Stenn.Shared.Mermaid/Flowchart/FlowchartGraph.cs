@@ -220,6 +220,47 @@ namespace Stenn.Shared.Mermaid.Flowchart
             return relation;
         }
 
+        public void CleanNodesWithoutRelations(Func<FlowchartGraphItem, bool>? leaveItems = null)
+        {
+            leaveItems ??= _ => false;
+
+            var itemsIds = _items.Keys.ToHashSet();
+            foreach (var relation in _relations)
+            {
+                itemsIds.Remove(relation.LeftItem.Id);
+                itemsIds.Remove(relation.RightItem.Id);
+            }
+
+            List<string> deletedIds = new();
+            var repeat = true;
+            while (repeat)
+            {
+                deletedIds.Clear();
+                repeat = false;
+
+                foreach (var itemId in itemsIds)
+                {
+                    var item = FindItem(itemId);
+                    if (item is null)
+                    {
+                        deletedIds.Add(itemId);
+                        continue;
+                    }
+                    if (item.Children.Count == 0 && !leaveItems(item))
+                    {
+                        deletedIds.Add(itemId);
+                        RemoveItem(item);
+                        repeat = true;
+                    }
+                }
+                
+                foreach (var deletedId in deletedIds)
+                {
+                    itemsIds.Remove(deletedId);
+                }
+            }
+        }
+
         /// <inheritdoc />
         protected internal override bool Print(AdvStringBuilder builder, MermaidPrintConfig config)
         {

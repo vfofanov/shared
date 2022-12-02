@@ -24,7 +24,13 @@ namespace Stenn.Shared.Reflection
             {
                 return type.GetGenericArguments()[0].HumanizeName(fullName) + "?";
             }
-            return $"{name[..name.IndexOf('`')]}<{string.Join(", ", type.GetGenericArguments().Select(t => HumanizeName(t, fullName)))}>";
+            
+#if NETSTANDARD2_0
+            var typeName = name.Substring(0, name.IndexOf('`'));
+#else
+            var typeName = name[..name.IndexOf('`')];
+#endif
+            return $"{typeName}<{string.Join(", ", type.GetGenericArguments().Select(t => HumanizeName(t, fullName)))}>";
         }
 
         /// <summary>

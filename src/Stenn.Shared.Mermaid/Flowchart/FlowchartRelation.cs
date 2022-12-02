@@ -134,7 +134,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
             if (!string.IsNullOrWhiteSpace(Caption))
             {
                 builder.Append('|');
-                builder.Append(MermaidHelper.EscapeString(Caption, config));
+                builder.Append(MermaidHelper.EscapeString(Caption!, config));
                 builder.Append('|');
             }
             builder.Append(MermaidHelper.EscapeString(RightItem.Id, config));

@@ -17,7 +17,7 @@ namespace Stenn.Shared.AspNetCore
             }
 
             // ensure _routePattern starts with /
-            _routePattern = routePattern.StartsWith('/') ? routePattern : $"/{routePattern}";
+            _routePattern = routePattern.StartsWith("/") ? routePattern : $"/{routePattern}";
             
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }

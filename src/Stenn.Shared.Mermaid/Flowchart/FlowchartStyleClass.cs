@@ -17,7 +17,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
 
         internal FlowchartGraph Graph { get; }
 
-        internal Dictionary<string, string> Modifiers { get; init; } = new();
+        internal Dictionary<string, string> Modifiers { get; private set; } = new();
 
         internal List<FlowchartGraphItem> Items { get; } = new();
 
@@ -43,7 +43,7 @@ namespace Stenn.Shared.Mermaid.Flowchart
             }
             else
             {
-                Modifiers[name] = value;
+                Modifiers[name] = value!;
             }
             return this;
         }

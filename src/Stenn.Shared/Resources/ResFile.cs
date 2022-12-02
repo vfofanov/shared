@@ -21,7 +21,11 @@ namespace Stenn.Shared.Resources
         private static string PrepareResPath(Assembly assembly, string resPath)
         {
             resPath = resPath.Replace('\\', '.').Replace('/', '.');
+#if NETSTANDARD2_0
+            if (resPath.StartsWith("."))
+#else
             if (resPath.StartsWith('.'))
+#endif
             {
                 var assemblyName = assembly.GetName().Name;
                 //NOTE: This mean relative path

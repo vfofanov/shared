@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Csv common extensions</Description>
-    <Nullable>enable</Nullable>
+    
   </PropertyGroup> 
 
   <ItemGroup>

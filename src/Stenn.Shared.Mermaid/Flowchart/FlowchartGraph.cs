@@ -242,7 +242,12 @@ namespace Stenn.Shared.Mermaid.Flowchart
         {
             leaveItems ??= _ => false;
 
-            var itemsIds = _items.Keys.ToHashSet();
+#if !NETSTANDARD2_0
+var itemsIds = _items.Keys.ToHashSet();
+#else
+            var itemsIds =new HashSet<string>(_items.Keys);
+#endif
+            
             foreach (var relation in _relations)
             {
                 itemsIds.Remove(relation.LeftItem.Id);

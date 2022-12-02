@@ -2,5 +2,21 @@
 
 namespace Stenn.Shared.Tables
 {
-    public record TableWriterColumn(string Name, Type ColumnType);
+    public class TableWriterColumn
+    {
+        public TableWriterColumn(string name, Type columnType)
+        {
+            Name = name;
+            ColumnType = columnType;
+        }
+
+        public string Name { get; }
+        public Type ColumnType { get; }
+
+        public void Deconstruct(out string name, out Type columnType)
+        {
+            name = Name;
+            columnType = ColumnType;
+        }
+    }
 }

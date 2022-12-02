@@ -52,7 +52,8 @@ namespace Stenn.Csv
         /// <returns></returns>
         public static T? NullOrEmpty<T>(string? value, Func<string, T> convert, T? deflt)
         {
-            var r = string.IsNullOrEmpty(value) ? deflt : convert(value);
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+            var r = string.IsNullOrEmpty(value) || value is null ? deflt : convert(value);
             return r;
         }
 
@@ -66,7 +67,8 @@ namespace Stenn.Csv
         /// <returns></returns>
         public static T? NullOrWhitespace<T>(string? value, Func<string, T> convert, T? deflt)
         {
-            var r = string.IsNullOrWhiteSpace(value) ? deflt : convert(value);
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+            var r = string.IsNullOrWhiteSpace(value) || value is null ? deflt : convert(value);
             return r;
         }
 
@@ -158,7 +160,7 @@ namespace Stenn.Csv
         {
             return NullOrEmpty<decimal?>(value, v => decimal.Parse(v, style, NumberFormatInfo.InvariantInfo), null);
         }
-        
+
         /// <summary>
         /// Returns value if it doesn't equal null or empty otherwise throws <see cref="ArgumentException"/>
         /// </summary>
@@ -179,7 +181,11 @@ namespace Stenn.Csv
             where T : struct, Enum
         {
             // ReSharper disable once ConvertClosureToMethodGroup
+#if !NETSTANDARD2_0
             return NullOrEmpty<T?>(value, v => System.Enum.Parse<T>(v), null);
+#else
+            return NullOrEmpty<T?>(value, v => (T)System.Enum.Parse(typeof(T), v), null);
+#endif
         }
     }
 }

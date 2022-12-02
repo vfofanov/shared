@@ -9,7 +9,60 @@ namespace Stenn.Shared.Mermaid.Flowchart
     {
         private static string ToHtml(Color color)
         {
+#if NETSTANDARD2_1
+            if (color.IsEmpty)
+            {
+                return string.Empty;
+            }
+            if (color.IsSystemColor)
+            {
+                return color.ToKnownColor() switch
+                {
+                    KnownColor.ActiveBorder => "activeborder",
+                    KnownColor.ActiveCaption => "activecaption",
+                    KnownColor.GradientActiveCaption => "activecaption",
+                    KnownColor.ActiveCaptionText => "captiontext",
+                    KnownColor.AppWorkspace => "appworkspace",
+                    KnownColor.Control => "buttonface",
+                    KnownColor.ControlLight => "buttonface",
+                    KnownColor.ControlDark => "buttonshadow",
+                    KnownColor.ControlDarkDark => "threeddarkshadow",
+                    KnownColor.ControlLightLight => "buttonhighlight",
+                    KnownColor.ControlText => "buttontext",
+                    KnownColor.Desktop => "background",
+                    KnownColor.GrayText => "graytext",
+                    KnownColor.Highlight => "highlight",
+                    KnownColor.HotTrack => "highlight",
+                    KnownColor.HighlightText => "highlighttext",
+                    KnownColor.MenuHighlight => "highlighttext",
+                    KnownColor.InactiveBorder => "inactiveborder",
+                    KnownColor.InactiveCaption => "inactivecaption",
+                    KnownColor.GradientInactiveCaption => "inactivecaption",
+                    KnownColor.InactiveCaptionText => "inactivecaptiontext",
+                    KnownColor.Info => "infobackground",
+                    KnownColor.InfoText => "infotext",
+                    KnownColor.Menu => "menu",
+                    KnownColor.MenuBar => "menu",
+                    KnownColor.MenuText => "menutext",
+                    KnownColor.ScrollBar => "scrollbar",
+                    KnownColor.Window => "window",
+                    KnownColor.WindowFrame => "windowframe",
+                    KnownColor.WindowText => "windowtext",
+                    _ => string.Empty
+                };
+            }
+
+            if (color.IsNamedColor)
+            {
+                return !(color == Color.LightGray) ? color.Name : "LightGrey";
+            }
+#endif
+#if NETSTANDARD2_0 || NETSTANDARD2_1
+
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+#else
             return ColorTranslator.ToHtml(color);
+#endif
         }
 
         /// <summary>

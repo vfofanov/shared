@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Stenn.Shared.Text
@@ -44,7 +45,11 @@ namespace Stenn.Shared.Text
                 {
                     return;
                 }
+#if NETSTANDARD
+                _ident = _ident.Substring(0, _ident.Length - _identChunk.Length);
+#else
                 _ident = _ident[..^_identChunk.Length];
+#endif
             }
         }
 
@@ -148,7 +153,8 @@ namespace Stenn.Shared.Text
             _stringBuilder.Append(value);
             return this;
         }
-
+        
+#if !NETSTANDARD2_0
         public AdvStringBuilder Append(ReadOnlyMemory<char> value)
         {
             AppendIdent();
@@ -162,6 +168,117 @@ namespace Stenn.Shared.Text
             _stringBuilder.Append(value);
             return this;
         }
+
+        public AdvStringBuilder Insert(int index, ReadOnlySpan<char> value)
+        {
+            _stringBuilder.Insert(index, value);
+            return this;
+        }
+
+        public AdvStringBuilder Append(StringBuilder? value, int startIndex, int count)
+        {
+            AppendIdent();
+            _stringBuilder.Append(value, startIndex, count);
+            return this;
+        }
+
+        public void CopyTo(int sourceIndex, Span<char> destination, int count)
+        {
+            _stringBuilder.CopyTo(sourceIndex, destination, count);
+        }
+
+        public bool Equals(ReadOnlySpan<char> span)
+        {
+            return _stringBuilder.Equals(span);
+        }
+        
+        public AdvStringBuilder AppendJoin(char separator, params object?[] values)
+        {
+            AppendIdent();
+            _stringBuilder.AppendJoin(separator, values);
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin(char separator, params string?[] values)
+        {
+            AppendIdent();
+            _stringBuilder.AppendJoin(separator, values);
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin(string? separator, params object?[] values)
+        {
+            AppendIdent();
+            _stringBuilder.AppendJoin(separator, values);
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin(string? separator, params string?[] values)
+        {
+            AppendIdent();
+            _stringBuilder.AppendJoin(separator, values);
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin<T>(char separator, IEnumerable<T> values)
+        {
+            AppendIdent();
+            _stringBuilder.AppendJoin(separator, values);
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin<T>(string? separator, IEnumerable<T> values)
+        {
+            AppendIdent();
+            _stringBuilder.AppendJoin(separator, values);
+            return this;
+        }
+#else
+        public AdvStringBuilder AppendJoin(char separator, params object?[] values)
+        {
+            AppendJoin(separator.ToString(), values);
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin(char separator, params string?[] values)
+        {
+            AppendJoin(separator.ToString(), values);
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin(string? separator, params object?[] values)
+        {
+            AppendIdent();
+            _stringBuilder.Append(string.Join( separator, values));
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin(string? separator, params string?[] values)
+        {
+            AppendIdent();
+            _stringBuilder.Append(string.Join( separator, values));
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin<T>(char separator, IEnumerable<T> values)
+        {
+            AppendJoin(separator, values.Cast<object>().ToArray());
+            return this;
+        }
+
+        public AdvStringBuilder AppendJoin<T>(string? separator, IEnumerable<T> values)
+        {
+            AppendJoin(separator, values.Cast<object>().ToArray());
+            return this;
+        }
+#endif
+#if !NETSTANDARD
+        public StringBuilder.ChunkEnumerator GetChunks()
+        {
+            return _stringBuilder.GetChunks();
+        }
+#endif
+
 
         public AdvStringBuilder Append(sbyte value)
         {
@@ -198,12 +315,6 @@ namespace Stenn.Shared.Text
             return this;
         }
 
-        public AdvStringBuilder Append(StringBuilder? value, int startIndex, int count)
-        {
-            AppendIdent();
-            _stringBuilder.Append(value, startIndex, count);
-            return this;
-        }
 
         public AdvStringBuilder Append(ushort value)
         {
@@ -282,48 +393,6 @@ namespace Stenn.Shared.Text
             return this;
         }
 
-        public AdvStringBuilder AppendJoin(char separator, params object?[] values)
-        {
-            AppendIdent();
-            _stringBuilder.AppendJoin(separator, values);
-            return this;
-        }
-
-        public AdvStringBuilder AppendJoin(char separator, params string?[] values)
-        {
-            AppendIdent();
-            _stringBuilder.AppendJoin(separator, values);
-            return this;
-        }
-
-        public AdvStringBuilder AppendJoin(string? separator, params object?[] values)
-        {
-            AppendIdent();
-            _stringBuilder.AppendJoin(separator, values);
-            return this;
-        }
-
-        public AdvStringBuilder AppendJoin(string? separator, params string?[] values)
-        {
-            AppendIdent();
-            _stringBuilder.AppendJoin(separator, values);
-            return this;
-        }
-
-        public AdvStringBuilder AppendJoin<T>(char separator, IEnumerable<T> values)
-        {
-            AppendIdent();
-            _stringBuilder.AppendJoin(separator, values);
-            return this;
-        }
-
-        public AdvStringBuilder AppendJoin<T>(string? separator, IEnumerable<T> values)
-        {
-            AppendIdent();
-            _stringBuilder.AppendJoin(separator, values);
-            return this;
-        }
-
         public AdvStringBuilder AppendLine()
         {
             _stringBuilder.AppendLine();
@@ -351,29 +420,14 @@ namespace Stenn.Shared.Text
             _stringBuilder.CopyTo(sourceIndex, destination, destinationIndex, count);
         }
 
-        public void CopyTo(int sourceIndex, Span<char> destination, int count)
-        {
-            _stringBuilder.CopyTo(sourceIndex, destination, count);
-        }
-
         public int EnsureCapacity(int capacity)
         {
             return _stringBuilder.EnsureCapacity(capacity);
         }
 
-        public bool Equals(ReadOnlySpan<char> span)
-        {
-            return _stringBuilder.Equals(span);
-        }
-
         public bool Equals(StringBuilder? sb)
         {
             return _stringBuilder.Equals(sb);
-        }
-
-        public StringBuilder.ChunkEnumerator GetChunks()
-        {
-            return _stringBuilder.GetChunks();
         }
 
         public AdvStringBuilder Insert(int index, bool value)
@@ -442,12 +496,6 @@ namespace Stenn.Shared.Text
             return this;
         }
 
-        public AdvStringBuilder Insert(int index, ReadOnlySpan<char> value)
-        {
-            _stringBuilder.Insert(index, value);
-            return this;
-        }
-
         public AdvStringBuilder Insert(int index, sbyte value)
         {
             _stringBuilder.Insert(index, value);
@@ -510,12 +558,18 @@ namespace Stenn.Shared.Text
 
         public AdvStringBuilder Replace(string oldValue, string? newValue)
         {
+#if NETSTANDARD
+            newValue ??= string.Empty; 
+#endif 
             _stringBuilder.Replace(oldValue, newValue);
             return this;
         }
 
         public AdvStringBuilder Replace(string oldValue, string? newValue, int startIndex, int count)
         {
+#if NETSTANDARD
+            newValue ??= string.Empty; 
+#endif
             _stringBuilder.Replace(oldValue, newValue, startIndex, count);
             return this;
         }

@@ -83,7 +83,7 @@ namespace Stenn.Shared.Mermaid
 
         private static string MarkerReplace(string value, string marker, string replacement)
         {
-            return value.Replace(marker, replacement, StringComparison.CurrentCultureIgnoreCase);
+            return value.Replace(marker, replacement);
         }
 
         private static char ReplaceRestrictedSymbols(char symbol, char replace)

@@ -32,7 +32,11 @@ namespace Stenn.Shared.Csv
 
         public void AddRow(string?[] values)
         {
+#if NETSTANDARD2_0
+            _sbuilder.AppendLine(string.Join(Delimiter.ToString(), values.Select(GetCsvValue).ToArray()));
+#else
             _sbuilder.AppendLine(string.Join(Delimiter, values.Select(GetCsvValue)));
+#endif
         }
 
         public string Build()

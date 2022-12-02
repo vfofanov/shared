@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
     <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+        <NETCoreTargetFrameworks>net6.0;net7.0</NETCoreTargetFrameworks>
+        <IsTestsProject>$(MSBuildProjectName.EndsWith(".Tests"))</IsTestsProject>
+
         <LangVersion>latest</LangVersion>
         <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\bin\Packages</PackageOutputPath>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <NoWarn>EF1001;$(NoWarn)</NoWarn>
+
+        <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <MSBuildTreatWarningsAsErrors>True</MSBuildTreatWarningsAsErrors>
     </PropertyGroup>
 
+    <!--    Defaults for seedwork tests-->
+    <PropertyGroup Condition="'$(IsTestsProject)'=='True'">
+        <TargetFrameworks>$(NETCoreTargetFrameworks);net5.0</TargetFrameworks>
+        <MSBuildTreatWarningsAsErrors>False</MSBuildTreatWarningsAsErrors>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <!--    Defaults for seedwork packages -->
+    <PropertyGroup Condition="'$(IsTestsProject)'!='True'">
+        <TargetFrameworks>$(NETCoreTargetFrameworks);netstandard2.0;netstandard2.1</TargetFrameworks>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
     <!--    Stenn MSBuild extensions-->
     <ItemGroup>
         <PackageReference Include="Stenn.MSBuild.Extensions" Version="1.0.18">

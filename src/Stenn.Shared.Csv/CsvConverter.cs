@@ -8,7 +8,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Stenn.Shared.Resources;
 
-namespace Stenn.Csv
+namespace Stenn.Shared.Csv
 {
     public static class CsvConverter
     {

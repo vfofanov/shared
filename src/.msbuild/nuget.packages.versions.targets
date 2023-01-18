@@ -16,7 +16,7 @@
     <ItemGroup>
 
         <PackageReference Update="coverlet.collector" Version="3.1.0" />
-        <PackageReference Update="CsvHelper" Version="27.2.1" />
+        <PackageReference Update="CsvHelper" Version="30.0.1" />
 
         <PackageReference Update="FluentAssertions" Version="6.8.0" />
 
